@@ -195,3 +195,31 @@ CREATE VIEW VISTA_E WITH ENCRYPTION AS
 SELECT nombre FROM usuarios;
 
 /*AL PEDIR INFORMACION NO DEBERA MOSTRARKA*/
+select * FROM VISTA_E;
+
+SP_HELPTEXT VISTA_E;
+
+
+/*Eliminando las vistas
+	Al eliminar las tablas de origenno se elimina la vista
+*/
+
+DROP VIEW VISTA_E;
+
+/*
+UPDATE AND DELETE CON VISTAS
+*/
+USE empleados;
+
+SELECT * FROM usuarioS ORDER BY edad;
+
+CREATE VIEW MUJERES_V AS 
+SELECT * FROM usuarios WHERE sexo = 'F';
+
+SELECT * FROM MUJERES_V;
+
+UPDATE MUJERES_V SET tipo_usuario = 'ROOT' 
+WHERE id_usuario = 31;
+
+/* EL COMANDO DELETE AFECTA TAMBIEN A LAS VISTAS Y POR ENDE A LA TABLA ORIGINAL*/
+DELETE FROM MUJERES_V;
