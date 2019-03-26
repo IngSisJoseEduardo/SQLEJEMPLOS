@@ -117,6 +117,81 @@ SELECT * FROM libros WHERE id_libro in (2,4,6);
 
 SELECT * FROM libros WHERE id_libro not in (2,4,6);
 
+/*
+	EJEMPLO DE IN Y NOT IN CON SUBCONSULTAS
+*/
+
 SELECT * FROM libros WHERE id_libro in ( SELECT id_libro FROM libros WHERE precio_venta >300 );
 
 SELECT * FROM libros WHERE id_libro not in ( SELECT id_libro FROM libros WHERE precio_venta >300 );
+
+/*
+	SUBCONSULTAS CON ANY Y ALL
+
+	EQUIVALENIAS DE IN Y NOT IN
+	IN: = ANY
+	NOT IN: <> ALL
+*/
+
+USE empleados;
+
+SELECT * FROM usuarios;
+
+SELECT * FROM usuarios WHERE sexo = 'F' AND edad = ANY( SELECT edad FROM usuarios WHERE sexo = 'M') ORDER BY edad;
+SELECT * FROM usuarios WHERE sexo = 'F' AND edad <> ALL( SELECT edad FROM usuarios WHERE sexo = 'M') ORDER BY edad;
+
+
+/*
+	SUBCONSULTAS CON UPDATE Y DELETE
+*/
+
+SELECT * FROM usuarios;
+
+UPDATE usuarios SET tipo_usuario = 'RooT' WHERE id_usuario = ANY( SELECT id_usuario FROM usuarios WHERE edad > 24);
+
+DELETE usuarios WHERE id_usuario = ANY( SELECT id_usuario FROM usuarios WHERE EDAD > 24 );
+
+
+/*
+	SUBCONSULTAS CON INSERT
+*/
+USE empleados;
+SELECT * FROM nombres;
+/*
+insertando los nombres de los usuarios en la tabla nombre enuna sola consulta
+*/
+INSERT INTO nombres (nombre)
+SELECT (nombre) FROM usuarios;
+
+/*
+	EL GO
+	utilizado para delimitar conjunto de sentencias
+*/
+
+
+/*
+	CREANDO LAS VISTAS
+*/
+CREATE VIEW usuarios_v AS 
+SELECT nombre FROM usuarios;
+
+SELECT COUNT(*) FROM usuarios_v;
+SELECT * FROM usuarios_v;
+
+
+/*
+	OBTENER INFORMACION DEL AS VISTAS NO ENCRIPTADAS
+	CON 'SP_HELPTEXT'
+*/
+
+SP_HELPTEXT usuarios_v;
+
+/*
+	ENCRIPTANDO LAS VISTAS CON :
+	WITH ENCRYPTION AS 
+*/
+
+CREATE VIEW VISTA_E WITH ENCRYPTION AS 
+SELECT nombre FROM usuarios;
+
+/*AL PEDIR INFORMACION NO DEBERA MOSTRARKA*/
